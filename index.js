@@ -1,12 +1,14 @@
+require('dotenv').config();
 const express = require('express');
+const PhoneNumbers = require('./models/phoneNumbers');
+
 const morgan = require('morgan');
 const cors = require('cors');
 
 const app = express();
 
-app.use(express.json());
-
 app.use(express.static('build'));
+app.use(express.json());
 
 morgan.token('body', (req, res) => JSON.stringify(req.body));
 
@@ -18,120 +20,142 @@ app.use(
 
 app.use(cors());
 
-let phoneBook = [
-  { id: 1, name: 'Arto Hellas', number: '040-123456' },
-  { id: 2, name: 'Ada Lovelace', number: '39-44-5323523' },
-  { id: 3, name: 'Dan Abramov', number: '12-43-234345' },
-  { id: 4, name: 'Mary Poppendieck', number: '39-23-6423122' },
-];
-
 //ROUTES
 
 //GET
-app.get('/api/persons', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    docs: phoneBook.length,
-    data: phoneBook,
-  });
-});
-
-app.get('/api/persons/:id', (req, res) => {
-  const data = phoneBook.find(item => item.id === +req.params.id);
+app.get('/api/persons', async (req, res) => {
+  const data = await PhoneNumbers.find();
 
   if (!data) {
     return res.status(404).json({
       status: 'fail',
-      message: 'No item with that ID',
+      message: 'Couldnt find any phonenumbers',
     });
   }
+
   res.status(200).json({
     status: 'success',
+    docs: data.length,
     data,
   });
 });
 
-app.get('/info', (req, res) => {
-  res
-    .status(200)
-    .send(
-      `Phonebook has info for ${
-        phoneBook.length
-      } people.  ${new Date().toUTCString()}`
-    );
+app.get('/api/persons/:id', async (req, res, next) => {
+  try {
+    const data = await PhoneNumbers.findById(req.params.id);
+
+    if (!data) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No item with that ID',
+      });
+    }
+    res.status(200).json({
+      status: 'success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/info', async (req, res, next) => {
+  try {
+    const data = await PhoneNumbers.find();
+
+    res
+      .status(200)
+      .send(
+        `Phonebook has info for ${
+          data.length
+        } people.  ${new Date().toUTCString()}`
+      );
+  } catch (err) {
+    next(err);
+  }
 });
 
 //PUT
-app.put(`/api/persons/:id`, (req, res) => {
-  const data = phoneBook.find(item => item.id === +req.params.id);
-
-  if (!data) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No item with that ID',
+app.put(`/api/persons/:id`, async (req, res, next) => {
+  try {
+    const data = await PhoneNumbers.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+      context: 'query',
     });
+
+    if (!data) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No item with that ID',
+      });
+    }
+
+    const { name, number } = req.body;
+
+    const newItem = { ...data, name, number };
+
+    res.status(200).json({
+      status: 'success',
+      data: newItem._doc,
+    });
+  } catch (err) {
+    next(err);
   }
-
-  const { name, number } = req.body;
-
-  const newItem = { ...data, name, number };
-
-  phoneBook = phoneBook
-    .filter(item => item.id !== +req.params.id)
-    .concat(newItem);
-
-  res.status(200).json({
-    status: 'success',
-    data: newItem,
-  });
 });
 
 //POST
-app.post('/api/persons', (req, res) => {
-  const { name, number } = req.body;
+app.post('/api/persons', async (req, res, next) => {
+  try {
+    const newItem = await PhoneNumbers.create(req.body);
 
-  if (!name || !number) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Document needs to have name and number.',
+    res.status(201).json({
+      status: 'success',
+      data: newItem,
     });
+  } catch (err) {
+    next(err);
   }
-
-  const newItem = {
-    id: Math.floor(Math.random() * 100000),
-    name,
-    number,
-  };
-
-  if (phoneBook.map(item => item.name).includes(newItem.name)) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'That name already exists',
-    });
-  }
-
-  phoneBook = phoneBook.concat(newItem);
-
-  res.status(201).json({
-    status: 'success',
-    data: newItem,
-  });
 });
 
 //DELETE
-app.delete('/api/persons/:id', (req, res) => {
-  const data = phoneBook.find(item => item.id === +req.params.id);
+app.delete('/api/persons/:id', async (req, res, next) => {
+  try {
+    const data = await PhoneNumbers.findByIdAndDelete(req.params.id);
 
-  if (!data) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No item with that ID',
+    if (!data) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No item with that ID',
+      });
+    }
+
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
+});
+
+//ERROR HANDLER
+
+const errorHandler = (error, req, res, next) => {
+  console.log(error.message);
+
+  if (error.name === 'CastError') {
+    return res.status(400).json({
+      status: 'error',
+      message: 'malformatted ID',
+    });
+  } else if (error.name === 'ValidationError') {
+    return res.status(400).json({
+      status: 'error',
+      message: error.message,
     });
   }
-  phoneBook = phoneBook.filter(item => item.id !== +req.params.id);
+  next(err);
+};
 
-  res.status(204).end();
-});
+app.use(errorHandler);
 
 //SERVER
 const PORT = process.env.PORT || 3001;
