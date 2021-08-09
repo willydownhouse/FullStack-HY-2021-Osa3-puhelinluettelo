@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 //DATABASE CONNECTION
-const DB = process.env.DB_CONNECTION.replace(
-  '<password>',
-  process.env.DB_PASSWORD
-);
+const DB = process.env.DB_CONNECTION;
 
 mongoose
   .connect(DB, {
