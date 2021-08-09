@@ -23,21 +23,25 @@ app.use(cors());
 //ROUTES
 
 //GET
-app.get('/api/persons', async (req, res) => {
-  const data = await PhoneNumbers.find();
+app.get('/api/persons', async (req, res, next) => {
+  try {
+    const data = await PhoneNumbers.find();
 
-  if (!data) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Couldnt find any phonenumbers',
+    if (!data) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Couldnt find any phonenumbers',
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      docs: data.length,
+      data,
     });
+  } catch (err) {
+    next(err);
   }
-
-  res.status(200).json({
-    status: 'success',
-    docs: data.length,
-    data,
-  });
 });
 
 app.get('/api/persons/:id', async (req, res, next) => {
