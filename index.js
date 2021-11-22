@@ -22,6 +22,10 @@ app.use(cors());
 
 //ROUTES
 
+app.get('/health', res => {
+  res.send('healthcheck ok');
+});
+
 //GET
 app.get('/api/persons', async (req, res, next) => {
   try {
