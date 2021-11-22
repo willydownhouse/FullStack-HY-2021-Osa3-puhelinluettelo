@@ -1,11 +1,15 @@
 {
   "extends": "eslint:recommended",
   "parserOptions": {
-    "ecmaVersion": 2017
+    "ecmaVersion": 2017,
+    "requireConfigFile": false
   },
 
   "env": {
     "es6": true
   },
-  "parser": "@babel/eslint-parser"
+  "parser": "@babel/eslint-parser",
+  "rules": {
+    "no-undef": "off"
+  }
 }

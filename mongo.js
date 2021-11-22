@@ -47,7 +47,7 @@ if (process.argv.length === 5) {
     number: process.argv[4],
   });
 
-  phoneNumber.save().then(res => {
+  phoneNumber.save().then(() => {
     console.log(
       `added ${phoneNumber.name} number ${phoneNumber.number} to phonebook`
     );
