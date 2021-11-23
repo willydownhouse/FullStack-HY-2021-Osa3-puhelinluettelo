@@ -27,7 +27,7 @@ app.get('/health', res => {
 });
 
 app.get('/version', res => {
-  res.send('1');
+  res.send('1.0');
 });
 
 //GET
