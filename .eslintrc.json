@@ -10,6 +10,7 @@
   },
   "parser": "@babel/eslint-parser",
   "rules": {
-    "no-undef": "off"
+    "no-undef": "off",
+    "semi": ["error", "never"]
   }
 }
