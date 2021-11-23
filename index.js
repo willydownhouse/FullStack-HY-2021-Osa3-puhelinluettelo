@@ -26,6 +26,10 @@ app.get('/health', res => {
   res.send('healthcheck ok');
 });
 
+app.get('/version', res => {
+  res.send('1');
+});
+
 //GET
 app.get('/api/persons', async (req, res, next) => {
   try {
