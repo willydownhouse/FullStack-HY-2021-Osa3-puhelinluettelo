@@ -22,14 +22,6 @@ app.use(cors());
 
 //ROUTES
 
-app.get('/health', res => {
-  res.send('healthcheck ok');
-});
-
-app.get('/version', res => {
-  res.send('1.0');
-});
-
 //GET
 app.get('/api/persons', async (req, res, next) => {
   try {
@@ -146,6 +138,18 @@ app.delete('/api/persons/:id', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+//HEALTH
+app.get('/health', (req, res) => {
+  try {
+    res.send('healthcheck ok');
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.get('/version', (req, res) => {
+  res.send('1.0');
 });
 
 //ERROR HANDLER
