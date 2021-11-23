@@ -21,5 +21,15 @@ jobs:
         run: npm install
       - name: lint
         run: npm run eslint
-      - name: build
-        run: npm run build:full:deploy
+      - name: build ui
+        run: npm run build:ui
+      - name: deploy
+        if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'guarded-wildwood-80932'
+          heroku_email: 'ville.l.alatalo@gmail.com'
+          healthcheck: 'https://guarded-wildwood-80932.herokuapp.com/health'
+          checkstring: 'healthcheck ok'
+          rollbackonhealthcheckfailed: true

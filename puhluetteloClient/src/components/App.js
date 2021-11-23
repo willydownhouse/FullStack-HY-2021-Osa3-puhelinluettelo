@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <div className="ui container">
-      <h1 className="ui header">Phone😊</h1>
+      <h1 className="ui header">PhoneBok</h1>
 
       <FilterNames
         placeholder="Filter names..."
