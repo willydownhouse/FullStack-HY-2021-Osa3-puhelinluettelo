@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:ui": "rm -rf build && cd puhluetteloClient && npm run build --prod && cp -r build ../FullStack-HY-2021-Osa3-puhelinluettelo",
+    "build:ui": "rm -rf build && cd puhluetteloClient && npm run build --prod && cp -r build ../../FullStack-HY-2021-Osa3-puhelinluettelo",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "eslint": "eslint .",
