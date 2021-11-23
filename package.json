@@ -10,7 +10,7 @@
     "start:prod": "node index.js",
     "dev": "npm run build:ui && nodemon index.js",
     "eslint": "eslint .",
-    "test:e2e": "cypress open",
+    "test:e2e": "cypress run",
     "start:test": "cross-env NODE_ENV=test npm run build:ui && node index.js"
   },
   "author": "Ville Alatalo",
