@@ -7,9 +7,10 @@
     "build:ui": "rm -rf build && cd ../FullStack-HY-2021/Osa2/puhelinluettelo/ && npm run build --prod && cp -r build ../../../FullStack-HY-2021-Osa3-puhelinluettelo",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "deploy": "git push heroku master",
     "eslint": "eslint .",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+    "build:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
+    "build:full:debloy": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+    "deploy": "git push heroku master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ville Alatalo",
