@@ -1,0 +1,3 @@
+"build:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
+    "build:full:deploy": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+    "deploy": "git push heroku master",

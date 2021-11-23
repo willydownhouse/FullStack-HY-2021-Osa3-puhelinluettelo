@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import phoneService from "../services/PhoneNumbers";
+import phoneService from '../services/PhoneNumbers';
 
-const AddNewPersonForm = (props) => {
+const AddNewPersonForm = props => {
   const {
     phoneBook,
     setPhoneBook,
@@ -14,21 +14,21 @@ const AddNewPersonForm = (props) => {
     setSuccessMessage,
   } = props;
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = e => {
     e.preventDefault();
 
-    if (!phoneBook.map((person) => person.name).includes(newName)) {
+    if (!phoneBook.map(person => person.name).includes(newName)) {
       phoneService
         .create({ name: newName, number: phoneNumber })
-        .then((newPhoneNumber) => {
+        .then(newPhoneNumber => {
           setPhoneBook(phoneBook.concat(newPhoneNumber.data));
-          setSuccessMessage("New number created succesfully!");
+          setSuccessMessage('New number created succesfully!');
 
           setTimeout(() => {
             setSuccessMessage(null);
           }, 5000);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response.data);
           if (err.response.data.message) {
             setErrorMessage(err.response.data.message);
@@ -42,8 +42,8 @@ const AddNewPersonForm = (props) => {
             setErrorMessage(null);
           }, 5000);
         });
-      setNewName("");
-      setPhoneNumber("");
+      setNewName('');
+      setPhoneNumber('');
       return;
     }
 
@@ -52,27 +52,27 @@ const AddNewPersonForm = (props) => {
         `${newName} is already in the phonebook, do you want to replace the old number with the new one`
       )
     ) {
-      const currentObj = phoneBook.find((ob) => ob.name === newName);
+      const currentObj = phoneBook.find(ob => ob.name === newName);
 
       phoneService
         .update(currentObj._id, {
           name: newName,
           number: phoneNumber,
         })
-        .then((updatedObj) => {
+        .then(updatedObj => {
           setPhoneBook(
-            phoneBook.map((ob) =>
+            phoneBook.map(ob =>
               ob._id !== updatedObj.data._id ? ob : updatedObj.data
             )
           );
 
-          setSuccessMessage("Number updated succesfully!");
+          setSuccessMessage('Number updated succesfully!');
 
           setTimeout(() => {
             setSuccessMessage(null);
           }, 5000);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response.data);
           if (err.response.data.message) {
             setErrorMessage(err.response.data.message);
@@ -87,8 +87,8 @@ const AddNewPersonForm = (props) => {
           }, 5000);
         });
 
-      setNewName("");
-      setPhoneNumber("");
+      setNewName('');
+      setPhoneNumber('');
     }
   };
 
@@ -97,17 +97,22 @@ const AddNewPersonForm = (props) => {
       <form className="ui form" onSubmit={onFormSubmit}>
         <div className="field">
           <label>Name</label>
-          <input value={newName} onChange={(e) => setNewName(e.target.value)} />
+          <input
+            id="nimi"
+            value={newName}
+            onChange={e => setNewName(e.target.value)}
+          />
         </div>
         <div className="field">
           <label>Phonenumber</label>
           <input
+            id="number"
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={e => setPhoneNumber(e.target.value)}
           />
         </div>
         <div>
-          <button className="ui button secondary" type="submit">
+          <button id="add" className="ui button secondary" type="submit">
             Add
           </button>
         </div>

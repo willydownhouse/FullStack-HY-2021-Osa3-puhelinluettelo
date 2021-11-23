@@ -7,17 +7,17 @@
     "build:ui": "rm -rf build && cd puhluetteloClient && npm run build --prod && cp -r build ../../FullStack-HY-2021-Osa3-puhelinluettelo",
     "build:ui:action": "rm -rf build && cd puhluetteloClient && npm install && npm run build --prod && cp -r build ../../FullStack-HY-2021-Osa3-puhelinluettelo",
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start:prod": "node index.js",
+    "dev": "npm run build:ui && nodemon index.js",
     "eslint": "eslint .",
-    "build:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
-    "build:full:deploy": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
-    "deploy": "git push heroku master",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:e2e": "cypress open",
+    "start:test": "cross-env NODE_ENV=test npm run build:ui && node index.js"
   },
   "author": "Ville Alatalo",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongoose": "^5.13.5",
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/eslint-parser": "^7.15.0",
+    "cypress": "^9.0.0",
     "eslint": "^7.32.0"
   }
 }
