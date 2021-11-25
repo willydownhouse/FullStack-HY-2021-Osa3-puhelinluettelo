@@ -1,8 +1,15 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
+let DB;
+
+if (process.argv.length === 3) {
+  DB = process.env.db_connection.replace('PASSWORD', process.argv[2]);
+} else {
+  DB = process.env.DB_CONNECTION;
+}
+
 //DATABASE CONNECTION
-const DB = process.env.DB_CONNECTION;
 
 mongoose
   .connect(DB, {

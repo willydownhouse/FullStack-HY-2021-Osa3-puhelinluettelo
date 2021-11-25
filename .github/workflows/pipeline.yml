@@ -27,7 +27,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           command: npm run test:e2e
-          start: npm run start:prod
+          start: npm run start:prod ${{secrets.DB_PASSWORD}}
           wait-on: http://localhost:3001
 
       - name: deploy

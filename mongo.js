@@ -5,11 +5,11 @@ if (process.argv.length < 3) {
   process.exit(1);
 }
 
-//const password = process.argv[2];
+const password = process.argv[2];
 
-// const mongoUrl = `mongodb://willydownhouse:${password}@cluster0-shard-00-00.nqyxw.mongodb.net:27017,cluster0-shard-00-01.nqyxw.mongodb.net:27017,cluster0-shard-00-02.nqyxw.mongodb.net:27017/Full_Stack_puhelinluettelo?ssl=true&replicaSet=atlas-174wqa-shard-0&authSource=admin&retryWrites=true&w=majority`;
+const mongoUrl = `mongodb://willydownhouse:${password}@cluster0-shard-00-00.nqyxw.mongodb.net:27017,cluster0-shard-00-01.nqyxw.mongodb.net:27017,cluster0-shard-00-02.nqyxw.mongodb.net:27017/Full_Stack_puhelinluettelo?ssl=true&replicaSet=atlas-174wqa-shard-0&authSource=admin&retryWrites=true&w=majority`;
 
-const mongoUrl = process.env.DB_CONNECTION;
+//const mongoUrl = process.env.DB_CONNECTION;
 
 mongoose
   .connect(mongoUrl, {
