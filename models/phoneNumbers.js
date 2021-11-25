@@ -1,13 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-let DB;
-
-if (process.argv.length === 3) {
-  DB = process.argv[2];
-} else {
-  DB = process.env.DB_CONNECTION;
-}
+const DB = process.env.DB_CONNECTION;
 
 //DATABASE CONNECTION
 
