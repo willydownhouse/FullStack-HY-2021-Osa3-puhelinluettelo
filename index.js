@@ -141,7 +141,7 @@ app.delete('/api/persons/:id', async (req, res, next) => {
 });
 //HEALTH
 app.get('/health', (req, res) => {
-  res.send('healthcheck o');
+  res.send('healthcheck ok');
 });
 
 app.get('/version', (req, res) => {
