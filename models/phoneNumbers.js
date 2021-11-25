@@ -4,7 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 let DB;
 
 if (process.argv.length === 3) {
-  DB = process.env.db_connection.replace('PASSWORD', process.argv[2]);
+  DB = process.argv[2];
 } else {
   DB = process.env.DB_CONNECTION;
 }
